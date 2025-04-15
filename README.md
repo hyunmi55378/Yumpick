@@ -1,3 +1,3 @@
-# YumPick v2
+# YumPick v3
 
-Final version with brand logos, My List logic, and link activation only from My List.
+Improved version with clickable brands and logo-enabled My List.
