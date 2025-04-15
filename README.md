@@ -1,10 +1,8 @@
-# YumPick (Flat Version)
+# YumPick Final
 
-This version contains only the raw files for direct GitHub upload.
+This is the final version of YumPick static prototype to upload to GitHub and deploy via Vercel.
 
-## Included
-- index.html
-- vercel.json
-- README.md
-
-You can drag and drop these files into your GitHub repository, and Vercel will auto-deploy.
+## Features:
+- Add/remove brand to/from "My List"
+- Open official link on click
+- No duplicates

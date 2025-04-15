@@ -1,28 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>YumPick App</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YumPick</title>
   <style>
-    body { font-family: sans-serif; padding: 2em; text-align: center; }
-    button { margin: 10px; padding: 10px 20px; font-size: 1em; }
-    #myList { margin-top: 2em; font-weight: bold; }
+    body { font-family: Arial, sans-serif; text-align: center; padding: 2em; }
+    h1 { color: #e74c3c; }
+    .brands { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; }
+    .brand-btn {
+      background-color: #f39c12; color: white; border: none; padding: 10px 16px;
+      font-size: 1em; border-radius: 6px; cursor: pointer;
+    }
+    .brand-btn:hover { background-color: #e67e22; }
+    #myList { margin-top: 2em; font-weight: bold; font-size: 1.1em; }
   </style>
 </head>
 <body>
-  <h1>🍔 Welcome to YumPick!</h1>
-  <p>Select your favorite brands:</p>
-  <button onclick="addToList('McDonald's')">McDonald's</button>
-  <button onclick="addToList('Burger King')">Burger King</button>
-  <button onclick="addToList('Chick-fil-A')">Chick-fil-A</button>
+  <h1>🍔 YumPick: Pick Your Favorite Brands!</h1>
+  <p>Tap to add/remove from your list. All brands link to their official sites!</p>
+  <div class="brands">
+    <button class="brand-btn" onclick="toggleBrand('McDonald\'s', 'https://www.mcdonalds.com')">McDonald's</button>
+    <button class="brand-btn" onclick="toggleBrand('Burger King', 'https://www.burgerking.com')">Burger King</button>
+    <button class="brand-btn" onclick="toggleBrand('Chick-fil-A', 'https://www.chick-fil-a.com')">Chick-fil-A</button>
+    <button class="brand-btn" onclick="toggleBrand('Wendy\'s', 'https://www.wendys.com')">Wendy's</button>
+    <button class="brand-btn" onclick="toggleBrand('KFC', 'https://www.kfc.com')">KFC</button>
+    <button class="brand-btn" onclick="toggleBrand('Popeyes', 'https://www.popeyes.com')">Popeyes</button>
+    <button class="brand-btn" onclick="toggleBrand('Five Guys', 'https://www.fiveguys.com')">Five Guys</button>
+    <button class="brand-btn" onclick="toggleBrand('Panda Express', 'https://www.pandaexpress.com')">Panda Express</button>
+    <button class="brand-btn" onclick="toggleBrand('Subway', 'https://www.subway.com')">Subway</button>
+    <button class="brand-btn" onclick="toggleBrand('Pizza Hut', 'https://www.pizzahut.com')">Pizza Hut</button>
+    <button class="brand-btn" onclick="toggleBrand('Domino\'s', 'https://www.dominos.com')">Domino's</button>
+    <button class="brand-btn" onclick="toggleBrand('Little Caesars', 'https://www.littlecaesars.com')">Little Caesars</button>
+  </div>
+
   <div id="myList">My List: <span id="listItems">None</span></div>
 
   <script>
-    const selected = new Set();
-    function addToList(brand) {
-      selected.add(brand);
-      document.getElementById('listItems').innerText = Array.from(selected).join(', ');
+    const selected = new Map();
+
+    function toggleBrand(name, url) {
+      if (selected.has(name)) {
+        selected.delete(name);
+      } else {
+        selected.set(name, url);
+        window.open(url, '_blank');
+      }
+      updateList();
+    }
+
+    function updateList() {
+      const output = Array.from(selected.keys());
+      document.getElementById('listItems').innerText = output.length > 0 ? output.join(', ') : 'None';
     }
   </script>
 </body>
