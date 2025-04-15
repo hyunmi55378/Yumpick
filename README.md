@@ -1,3 +1,3 @@
-# YumPick v3
+# YumPick v4
 
-Improved version with clickable brands and logo-enabled My List.
+Includes logo display, clickable My List, and responsive layout.
