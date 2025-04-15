@@ -2,56 +2,92 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <title>YumPick v2</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YumPick</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; padding: 2em; }
-    h1 { color: #e74c3c; }
-    .brands { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 20px; }
-    .brand-btn {
-      background-color: #f39c12; color: white; border: none; padding: 10px 16px;
-      font-size: 1em; border-radius: 6px; cursor: pointer;
-    }
-    .brand-btn:hover { background-color: #e67e22; }
-    #myList { margin-top: 2em; font-weight: bold; font-size: 1.1em; }
+    body { font-family: sans-serif; margin: 0; padding: 1em; background: #fff8f4; }
+    h1 { text-align: center; color: #d35400; }
+    .brand-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin: 2em 0; }
+    .brand-card { background: white; border: 1px solid #eee; border-radius: 10px; padding: 1em; width: 120px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.05); cursor: pointer; }
+    .brand-card img { width: 60px; height: 60px; object-fit: contain; margin-bottom: 0.5em; }
+    .brand-card:hover { background: #fdf2e9; }
+    #myList { margin-top: 2em; padding: 1em; background: #fef6f0; border-top: 2px solid #f39c12; }
+    #myList h2 { color: #e67e22; }
+    .my-item { margin: 5px 0; cursor: pointer; color: #2c3e50; }
+    .my-item:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
-  <h1>🍔 YumPick: Pick Your Favorite Brands!</h1>
-  <p>Tap to add/remove from your list. All brands link to their official sites!</p>
-  <div class="brands">
-    <button class="brand-btn" onclick="toggleBrand('McDonald\'s', 'https://www.mcdonalds.com')">McDonald's</button>
-    <button class="brand-btn" onclick="toggleBrand('Burger King', 'https://www.burgerking.com')">Burger King</button>
-    <button class="brand-btn" onclick="toggleBrand('Chick-fil-A', 'https://www.chick-fil-a.com')">Chick-fil-A</button>
-    <button class="brand-btn" onclick="toggleBrand('Wendy\'s', 'https://www.wendys.com')">Wendy's</button>
-    <button class="brand-btn" onclick="toggleBrand('KFC', 'https://www.kfc.com')">KFC</button>
-    <button class="brand-btn" onclick="toggleBrand('Popeyes', 'https://www.popeyes.com')">Popeyes</button>
-    <button class="brand-btn" onclick="toggleBrand('Five Guys', 'https://www.fiveguys.com')">Five Guys</button>
-    <button class="brand-btn" onclick="toggleBrand('Panda Express', 'https://www.pandaexpress.com')">Panda Express</button>
-    <button class="brand-btn" onclick="toggleBrand('Subway', 'https://www.subway.com')">Subway</button>
-    <button class="brand-btn" onclick="toggleBrand('Pizza Hut', 'https://www.pizzahut.com')">Pizza Hut</button>
-    <button class="brand-btn" onclick="toggleBrand('Domino\'s', 'https://www.dominos.com')">Domino's</button>
-    <button class="brand-btn" onclick="toggleBrand('Little Caesars', 'https://www.littlecaesars.com')">Little Caesars</button>
+  <h1>🍟 YumPick: Pick Your Favorite Brands</h1>
+  <div class="brand-grid" id="brandGrid">
+<div class="brand-card" onclick="addToList('McDonald's', 'https://www.mcdonalds.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Mcdonalds-90s-logo.svg/120px-Mcdonalds-90s-logo.svg.png" alt="McDonald's logo"><br>McDonald's
+    </div>
+<div class="brand-card" onclick="addToList('Burger King', 'https://www.burgerking.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Burger_King_2020.svg/120px-Burger_King_2020.svg.png" alt="Burger King logo"><br>Burger King
+    </div>
+<div class="brand-card" onclick="addToList('Chick-fil-A', 'https://www.chick-fil-a.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/8/8e/Chick-fil-A_Logo.svg/120px-Chick-fil-A_Logo.svg.png" alt="Chick-fil-A logo"><br>Chick-fil-A
+    </div>
+<div class="brand-card" onclick="addToList('KFC', 'https://www.kfc.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/b/bf/KFC_logo.svg/120px-KFC_logo.svg.png" alt="KFC logo"><br>KFC
+    </div>
+<div class="brand-card" onclick="addToList('Popeyes', 'https://www.popeyes.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/6/65/Popeyes_Louisiana_Kitchen_logo.svg/120px-Popeyes_Louisiana_Kitchen_logo.svg.png" alt="Popeyes logo"><br>Popeyes
+    </div>
+<div class="brand-card" onclick="addToList('Panda Express', 'https://www.pandaexpress.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0f/Panda_Express_logo.svg/120px-Panda_Express_logo.svg.png" alt="Panda Express logo"><br>Panda Express
+    </div>
+<div class="brand-card" onclick="addToList('Pizza Hut', 'https://www.pizzahut.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/d/d2/Pizza_Hut_logo.svg/120px-Pizza_Hut_logo.svg.png" alt="Pizza Hut logo"><br>Pizza Hut
+    </div>
+<div class="brand-card" onclick="addToList('Domino's', 'https://www.dominos.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/74/Domino%27s_logo.svg/120px-Domino%27s_logo.svg.png" alt="Domino's logo"><br>Domino's
+    </div>
+<div class="brand-card" onclick="addToList('Little Caesars', 'https://www.littlecaesars.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/2/23/Little_Caesars_logo.svg/120px-Little_Caesars_logo.svg.png" alt="Little Caesars logo"><br>Little Caesars
+    </div>
+<div class="brand-card" onclick="addToList('Subway', 'https://www.subway.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/7/79/Subway_2016_logo.svg/120px-Subway_2016_logo.svg.png" alt="Subway logo"><br>Subway
+    </div>
+<div class="brand-card" onclick="addToList('Five Guys', 'https://www.fiveguys.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6c/Five_Guys_logo.svg/120px-Five_Guys_logo.svg.png" alt="Five Guys logo"><br>Five Guys
+    </div>
+<div class="brand-card" onclick="addToList('Wendy's', 'https://www.wendys.com')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/0b/Wendy%27s_new_logo.svg/120px-Wendy%27s_new_logo.svg.png" alt="Wendy's logo"><br>Wendy's
+    </div>
+
   </div>
-
-  <div id="myList">My List: <span id="listItems">None</span></div>
-
+  <div id="myList">
+    <h2>🧺 My List</h2>
+    <div id="listItems">None selected</div>
+  </div>
   <script>
-    const selected = new Map();
+    const myList = new Map();
 
-    function toggleBrand(name, url) {
-      if (selected.has(name)) {
-        selected.delete(name);
+    function addToList(name, url) {
+      if (!myList.has(name)) {
+        myList.set(name, url);
       } else {
-        selected.set(name, url);
-        window.open(url, '_blank');
+        myList.delete(name);
       }
-      updateList();
+      renderList();
     }
 
-    function updateList() {
-      const output = Array.from(selected.keys());
-      document.getElementById('listItems').innerText = output.length > 0 ? output.join(', ') : 'None';
+    function renderList() {
+      const container = document.getElementById('listItems');
+      if (myList.size === 0) {
+        container.innerHTML = "None selected";
+        return;
+      }
+      container.innerHTML = "";
+      myList.forEach((url, name) => {
+        const item = document.createElement("div");
+        item.className = "my-item";
+        item.textContent = name;
+        item.onclick = () => window.open(url, "_blank");
+        container.appendChild(item);
+      });
     }
   </script>
 </body>
