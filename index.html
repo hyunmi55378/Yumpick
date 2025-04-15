@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YumPick App</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; text-align: center; }
+    button { margin: 10px; padding: 10px 20px; font-size: 1em; }
+    #myList { margin-top: 2em; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🍔 Welcome to YumPick!</h1>
+  <p>Select your favorite brands:</p>
+  <button onclick="addToList('McDonald's')">McDonald's</button>
+  <button onclick="addToList('Burger King')">Burger King</button>
+  <button onclick="addToList('Chick-fil-A')">Chick-fil-A</button>
+  <div id="myList">My List: <span id="listItems">None</span></div>
+
+  <script>
+    const selected = new Set();
+    function addToList(brand) {
+      selected.add(brand);
+      document.getElementById('listItems').innerText = Array.from(selected).join(', ');
+    }
+  </script>
+</body>
+</html>
