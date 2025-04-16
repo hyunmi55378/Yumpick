@@ -1,3 +1,3 @@
-# YumPick v4
+# YumPick v6 – Animated Welcome + Brand List
 
-Includes logo display, clickable My List, and responsive layout.
+Includes animated welcome screen and brand selection.
