@@ -1,0 +1,68 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>YumPick - Pick Your Brands</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body { font-family: sans-serif; background: #fffefb; padding: 2em; }
+    h2 { text-align: center; margin-bottom: 1em; }
+    .guide { text-align: center; color: #666; margin-bottom: 1em; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 10px; }
+    .brand-btn {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 1em;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .brand-btn:hover {
+      background: #fff0e6;
+    }
+  </style>
+</head>
+<body>
+  <h2>브랜드를 선택하세요</h2>
+  <div class="guide">클릭하면 추가, 다시 클릭하면 삭제됩니다</div>
+  <div class="grid" id="brandGrid"></div>
+
+  <script>
+    const brands = [
+      ["McDonald's", "🍔"], ["Burger King", "👑"], ["Wendy's", "👩‍🦰"],
+      ["Five Guys", "🧑‍🤝‍🧑"], ["Shake Shack", "🥤"], ["Pizza Hut", "🍕"],
+      ["Domino's", "🟦"], ["Subway", "🥪"], ["Starbucks", "☕"],
+      ["KFC", "🍗"], ["Panda Express", "🐼"], ["Taco Bell", "🌮"],
+      ["Chipotle", "🌶️"], ["Dunkin'", "🍩"], ["Sonic", "🚗"],
+      ["Little Caesars", "🔥"], ["Whataburger", "🧀"], ["In-N-Out", "🚙"],
+      ["Panera Bread", "🥖"], ["Jersey Mike’s", "🥪"]
+    ];
+
+    const myList = new Set();
+    const grid = document.getElementById("brandGrid");
+
+    function renderGrid() {
+      grid.innerHTML = '';
+      brands.forEach(([name, emoji]) => {
+        const btn = document.createElement("button");
+        btn.className = "brand-btn";
+        btn.textContent = `${emoji} ${name}`;
+        if (myList.has(name)) btn.style.background = "#ffe2d8";
+        btn.onclick = () => {
+          if (myList.has(name)) {
+            myList.delete(name);
+          } else {
+            myList.add(name);
+          }
+          renderGrid();
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    renderGrid();
+  </script>
+</body>
+</html>
