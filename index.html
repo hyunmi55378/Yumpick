@@ -1,167 +1,75 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>YumPick</title>
+  <title>YumPick v6</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #fffefb;
-      overflow: hidden;
-    }
-    .screen {
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 1s ease;
-    }
-    .welcome {
-      background-color: #ffffff;
-      z-index: 2;
-    }
-    .main {
-      opacity: 0;
-      z-index: 1;
-    }
-    h1 {
-      font-size: 2em;
-      color: #D62300;
-      margin-bottom: 1em;
-      opacity: 0;
-      animation: fadeOutUp 3s forwards;
-    }
-    .message {
-      font-size: 1.4em;
-      color: #333;
-      opacity: 0;
-      animation: fadeIn 3s 3s forwards;
-    }
-    .start-btn {
-      margin-top: 2em;
-      padding: 0.6em 1.2em;
-      font-size: 1em;
-      background-color: #D62300;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      opacity: 0;
-      animation: fadeInUp 2s 4s forwards;
-    }
-    @keyframes fadeOutUp {
-      0% { opacity: 0; transform: translateY(20px); }
-      20% { opacity: 1; transform: translateY(0); }
-      80% { opacity: 1; }
-      100% { opacity: 0; transform: translateY(-20px); }
-    }
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-    .brand-grid {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      padding: 2em;
-    }
-    .brand-btn {
-      background: white;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      padding: 0.8em 1em;
-      font-size: 14px;
-      min-width: 100px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .brand-btn:hover {
-      background: #fff0e6;
-    }
-    #myList {
-      margin-top: 1em;
-      padding: 1em;
-      text-align: center;
-    }
-    #myList span {
-      display: inline-block;
-      margin: 0.3em;
-      padding: 0.6em 1em;
-      background: #fef0ec;
-      border-radius: 6px;
-      font-size: 14px;
-    }
+    body { margin:0; font-family:sans-serif; background:#fffefb; }
+    .screen { display:none; padding:2em; text-align:center; }
+    .visible { display:block; }
+    .brand-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(120px, 1fr)); gap:10px; margin-top:1em; }
+    .brand-btn { padding:1em; border-radius:10px; background:#fff; border:1px solid #ccc; cursor:pointer; }
+    .list-box { display:flex; gap:2em; justify-content:center; margin-top:2em; }
+    .list-col { flex:1; padding:1em; border:1px solid #ddd; border-radius:8px; background:#fdf9f3; min-height:150px; }
   </style>
 </head>
 <body>
-  <div class="screen welcome" id="welcomeScreen">
-    <h1>Welcome to YumPick</h1>
-    <div class="message">Create your list, compare deals, and choose quickly and easily.</div>
-    <button class="start-btn" onclick="startApp()">Get Started</button>
+  <div id="screen1" class="screen visible">
+    <h1 style="color:#D62300;">Welcome to YumPick</h1>
+    <p>Create your list, compare deals, and choose quickly and easily.</p>
+    <button onclick="showScreen(2)">Get Started</button>
   </div>
 
-  <div class="screen main" id="mainScreen">
+  <div id="screen2" class="screen">
+    <h2>나만의 리스트에 추가하고 싶은 브랜드를 클릭하세요</h2>
     <div class="brand-grid" id="brandGrid"></div>
-    <div id="myList">🧺 <strong>My List:</strong></div>
+  </div>
+
+  <div id="screen3" class="screen">
+    <h2>My List & Hot Deals</h2>
+    <div class="list-box">
+      <div class="list-col">
+        <h3>My List</h3>
+        <ul id="myList"></ul>
+      </div>
+      <div class="list-col">
+        <h3>Hot Deals</h3>
+        <ul id="hotDeals"><li>🔧 Deals will be added manually</li></ul>
+      </div>
+    </div>
   </div>
 
   <script>
-    const brands = [
-      ["McDonald's", "🍔"],
-      ["Burger King", "👑"],
-      ["Wendy's", "👩‍🦰"],
-      ["Five Guys", "🧑‍🤝‍🧑"],
-      ["Shake Shack", "🥤"],
-      ["In-N-Out", "🚗"],
-      ["Pizza Hut", "🍕"],
-      ["Domino's", "🟦"],
-      ["Papa John's", "🥬"],
-      ["Little Caesars", "🔥"],
-      ["Subway", "🥪"],
-      ["Starbucks", "☕"],
-      ["KFC", "🍗"],
-      ["Chick-fil-A", "🐔"],
-      ["Panda Express", "🐼"],
-      ["Taco Bell", "🌮"]
+    const allBrands = [
+      "McDonald's", "Burger King", "Wendy's", "Five Guys", "Shake Shack", "In-N-Out", "Jack in the Box", "Whataburger", "Culver's",
+      "Pizza Hut", "Domino's", "Papa John's", "Little Caesars", "Marco’s Pizza", "Blaze Pizza", "MOD Pizza", "Hungry Howie’s",
+      "Subway", "Jimmy John’s", "Jersey Mike’s", "Firehouse Subs", "Panera Bread", "Quiznos",
+      "Chick-fil-A", "KFC", "Popeyes", "Panda Express", "Bonchon",
+      "Starbucks", "Dunkin’", "Krispy Kreme", "Baskin Robbins", "Cold Stone",
+      "Dairy Queen", "Sonic Drive-In", "Taco Bell", "Chipotle", "Del Taco", "El Pollo Loco"
     ];
 
-    function startApp() {
-      document.getElementById('welcomeScreen').style.display = 'none';
-      const main = document.getElementById('mainScreen');
-      main.style.opacity = 1;
-    }
-
     const grid = document.getElementById("brandGrid");
-    const list = document.getElementById("myList");
-    const myList = new Set();
+    const myList = document.getElementById("myList");
 
-    brands.forEach(([name, icon]) => {
+    allBrands.forEach(name => {
       const btn = document.createElement("button");
       btn.className = "brand-btn";
-      btn.textContent = `${icon} ${name}`;
+      btn.textContent = name;
       btn.onclick = () => {
-        if (myList.has(name)) {
-          myList.delete(name);
-        } else {
-          myList.add(name);
-        }
-        renderList();
+        showScreen(3);
+        const li = document.createElement("li");
+        li.textContent = name;
+        myList.appendChild(li);
       };
       grid.appendChild(btn);
     });
 
-    function renderList() {
-      const listItems = Array.from(myList).map(name => `<span>${name}</span>`).join('');
-      list.innerHTML = "🧺 <strong>My List:</strong> " + listItems;
+    function showScreen(num) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('visible'));
+      document.getElementById('screen' + num).classList.add('visible');
     }
   </script>
 </body>

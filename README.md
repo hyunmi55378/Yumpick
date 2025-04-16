@@ -1,3 +1,1 @@
-# YumPick v6 – Animated Welcome + Brand List
-
-Includes animated welcome screen and brand selection.
+# YumPick v6 – Full Brand List + Welcome + My List + Hot Deals
