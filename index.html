@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Select Brands - YumPick</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: sans-serif; background: #fffefb; padding: 2em; text-align: center; }
+    h2 { margin-bottom: 0.5em; }
+    .guide { color: #666; margin-bottom: 1em; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: 12px;
+      margin-top: 1em;
+    }
+    .brand-btn {
+      padding: 1em;
+      border-radius: 10px;
+      background: #fff;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .brand-btn:hover {
+      background-color: #ffe6e0;
+    }
+  </style>
+</head>
+<body>
+  <h2>Select your favorite brands</h2>
+  <div class="guide">Click to add, click again to remove</div>
+  <div class="grid" id="brandGrid"></div>
+
+  <script>
+    const brands = [
+      ["McDonald's", "🍔"], ["Burger King", "👑"], ["Wendy's", "👩‍🦰"], ["Five Guys", "🧑‍🤝‍🧑"], ["Shake Shack", "🥤"],
+      ["In-N-Out", "🚗"], ["Jack in the Box", "📦"], ["Whataburger", "🍞"], ["Culver's", "🧀"], ["Sonic", "🔊"],
+      ["Pizza Hut", "🍕"], ["Domino's", "🟦"], ["Papa John's", "📬"], ["Little Caesars", "🏛️"], ["MOD Pizza", "🧩"],
+      ["Blaze Pizza", "🔥"], ["Marco’s Pizza", "🧭"], ["Hungry Howie’s", "😋"], ["Wingstop", "🍗"], ["Papa Murphy’s", "🥫"],
+      ["Subway", "🥪"], ["Jimmy John’s", "🚴"], ["Jersey Mike’s", "🌊"], ["Firehouse Subs", "🚒"], ["Panera Bread", "🥖"],
+      ["Quiznos", "❓"], ["Chick-fil-A", "🐔"], ["KFC", "🍗"], ["Popeyes", "🧡"], ["Panda Express", "🐼"],
+      ["Chipotle", "🌶️"], ["El Pollo Loco", "🔥"], ["Del Taco", "🌮"], ["Taco Bell", "🔔"], ["Starbucks", "☕"],
+      ["Dunkin'", "🍩"], ["Krispy Kreme", "🍩"], ["Baskin Robbins", "🍨"], ["Cold Stone", "🧊"], ["Dairy Queen", "👑"]
+    ];
+
+    const selected = new Set();
+    const grid = document.getElementById("brandGrid");
+
+    function renderGrid() {
+      grid.innerHTML = '';
+      brands.forEach(([name, emoji]) => {
+        const btn = document.createElement("button");
+        btn.className = "brand-btn";
+        btn.textContent = `${emoji} ${name}`;
+        if (selected.has(name)) btn.style.background = "#ffe2d8";
+        btn.onclick = () => {
+          if (selected.has(name)) selected.delete(name);
+          else selected.add(name);
+          renderGrid();
+        };
+        grid.appendChild(btn);
+      });
+    }
+
+    renderGrid();
+  </script>
+</body>
+</html>

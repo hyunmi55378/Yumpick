@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YumPick My List</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #fffefb;
+      margin: 0;
+      padding: 2em;
+    }
+    h1 {
+      text-align: center;
+      color: #D62300;
+      font-size: 1.8em;
+      margin-bottom: 0.2em;
+    }
+    .greeting {
+      text-align: center;
+      font-size: 1.2em;
+      color: #555;
+      margin-bottom: 1.5em;
+    }
+    .brand-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 2em;
+    }
+    .brand-block {
+      background: #fff;
+      border-radius: 10px;
+      padding: 10px;
+      width: 100px;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      font-size: 0.9em;
+    }
+    .brand-icon {
+      font-size: 1.5em;
+      margin-bottom: 0.3em;
+    }
+    .deals {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .deals h2 {
+      color: #D62300;
+      font-size: 1.4em;
+      margin-bottom: 1em;
+    }
+    .deal-item {
+      background: #fff;
+      padding: 1em;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 0 3px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .back-button {
+      margin: 2em auto 0;
+      display: block;
+      padding: 0.8em 1.6em;
+      font-size: 1em;
+      background-color: #D62300;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>YumPick My List</h1>
+  <div class="greeting">Ready to grab a bite?</div>
+
+  <div class="brand-row">
+    <div class="brand-block">
+      <div class="brand-icon">🍔</div>
+      <div>McDonald's</div>
+    </div>
+    <div class="brand-block">
+      <div class="brand-icon">🐼</div>
+      <div>Panda Express</div>
+    </div>
+    <div class="brand-block">
+      <div class="brand-icon">🍕</div>
+      <div>Pizza Hut</div>
+    </div>
+    <div class="brand-block">
+      <div class="brand-icon">🌮</div>
+      <div>Taco Bell</div>
+    </div>
+  </div>
+
+  <div class="deals">
+    <h2>🍟 Today's Hot Deals</h2>
+    <div class="deal-item">McDonald's - Free fries with any $1+ order (App only)</div>
+    <div class="deal-item">Panda Express - $3 off Family Meal</div>
+    <div class="deal-item">Pizza Hut - Buy 1 Get 1 Free Medium Pizza</div>
+    <div class="deal-item">Taco Bell - 2 Tacos for $3 (Today only)</div>
+  </div>
+
+  <button class="back-button" onclick="alert('Go back to brand selection')">Go back to add more</button>
+</body>
+</html>
