@@ -2,168 +2,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>YumPick Admin (Protected)</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <title>YumPick Admin (Secure)</title>
   <style>
-    body {
-      font-family: sans-serif;
-      padding: 2em;
-      background-color: #fffefb;
-    }
-    h1 {
-      color: #D62300;
-    }
-    label, select, input, button {
-      font-size: 1em;
-      margin-top: 1em;
+    body { font-family: sans-serif; padding: 20px; }
+    input, textarea, button {
       display: block;
-    }
-    input, select {
-      padding: 0.5em;
+      margin: 10px 0;
+      padding: 8px;
       width: 100%;
       max-width: 400px;
     }
-    button {
-      margin-top: 1.5em;
-      padding: 0.7em 1.5em;
-      background-color: #D62300;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
+    label { margin-top: 15px; display: block; font-weight: bold; }
+    .deal-card {
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+      max-width: 600px;
     }
-    ul {
-      margin-top: 2em;
-      padding-left: 1em;
-    }
-    #adminUI {
-      display: none;
-    }
-    #loginBox {
-      max-width: 400px;
-      margin: auto;
-      text-align: center;
-    }
-    #loginError {
-      color: red;
-      margin-top: 0.5em;
-    }
+    .success { color: green; }
+    .error { color: red; }
+    .hidden { display: none; }
   </style>
 </head>
 <body>
-  <div id="loginBox">
-    <h1>관리자 로그인</h1>
-    <input type="password" id="passwordInput" placeholder="비밀번호 입력" />
-    <button id="loginBtn">로그인</button>
-    <div id="loginError"></div>
-  </div>
 
-  <div id="adminUI">
-    <h1>YumPick 핫딜 입력(Admin)</h1>
+<div id="loginSection">
+  <h2>🔐 Admin Login</h2>
+  <input type="text" id="passwordInput" placeholder="Enter password">
+  <button onclick="login()">Login</button>
+  <div id="loginMsg"></div>
+</div>
 
-    <label for="brand">브랜드 선택</label>
-    <select id="brand">
-      <option value="">-- 브랜드 선택 --</option>
-      <option>McDonald's</option>
-      <option>Burger King</option>
-      <option>Wendy's</option>
-      <option>Domino's</option>
-      <option>Papa John's</option>
-      <option>Starbucks</option>
-      <option>Dunkin'</option>
-      <option>Taco Bell</option>
-      <option>Chick-fil-A</option>
-      <option>KFC</option>
-      <option>Subway</option>
-      <option>Chipotle</option>
-      <option>Panda Express</option>
-      <option>Sonic</option>
-      <option>Arby's</option>
-      <option>Little Caesars</option>
-      <option>Pizza Hut</option>
-      <option>Five Guys</option>
-      <option>Panera Bread</option>
-      <option>IHOP</option>
-      <option>Applebee's</option>
-      <option>Buffalo Wild Wings</option>
-      <option>Qdoba</option>
-      <option>Zaxby’s</option>
-      <option>Whataburger</option>
-      <option>Culver's</option>
-      <option>El Pollo Loco</option>
-      <option>Raising Cane’s</option>
-      <option>Blaze Pizza</option>
-      <option>MOD Pizza</option>
-    </select>
+<div id="adminPanel" class="hidden">
+  <h1>🍔 YumPick Admin Panel</h1>
+  <button onclick="logout()" style="margin-bottom: 20px;">🚪 Logout</button>
 
-    <label for="deal">핫딜 입력</label>
-    <input type="text" id="deal" placeholder="예: 2 Big Macs for $5!" />
-    <button onclick="saveDeal()">핫딜 저장</button>
 
-    <h2>입력된 핫딜 목록</h2>
-    <ul id="dealList"></ul>
-  </div>
+  <h3>Add or Update Hot Deal</h3>
+  <label>Brand</label>
+  <input type="text" id="brand">
+  <label>Deal</label>
+  <input type="text" id="deal">
+  <label>Note</label>
+  <input type="text" id="note">
+  <label>Link</label>
+  <input type="text" id="link">
+  <label>Valid Until</label>
+  <input type="date" id="validUntil">
+  <button onclick="saveDeal()">💾 Save</button>
+  <div id="saveMsg"></div>
 
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getFirestore, collection, setDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <h3>📋 Current Hot Deals</h3>
+  <div id="dealList">Loading...</div>
+</div>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyAJCZ-LH-KrMWMBck2rhNMkUAiZWy_m6wA",
-      authDomain: "yumpick-6c2b6.firebaseapp.com",
-      projectId: "yumpick-6c2b6",
-      storageBucket: "yumpick-6c2b6.firebasestorage.app",
-      messagingSenderId: "733622122733",
-      appId: "1:733622122733:web:c07e67b3fa8d0c17aaf4e4"
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyAJCZ-LH-KrMWMBck2rhNMkUAiZWy_m6wA",
+    authDomain: "yumpick-6c2b6.firebaseapp.com",
+    projectId: "yumpick-6c2b6",
+    storageBucket: "yumpick-6c2b6.firebasestorage.app",
+    messagingSenderId: "733622122733",
+    appId: "1:733622122733:web:c07e67b3fa8d0c17aaf4e4"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const PASSWORD = "Yumbless55378@"; // 🔐 설정 비밀번호
+
+  function login() {
+    const input = document.getElementById("passwordInput").value;
+    if (input === PASSWORD) {
+      localStorage.setItem("loggedIn", "true");
+      showAdmin();
+    } else {
+      document.getElementById("loginMsg").innerText = "❌ Wrong password!";
+    }
+  }
+
+  function showAdmin() {
+    document.getElementById("loginSection").classList.add("hidden");
+    document.getElementById("adminPanel").classList.remove("hidden");
+    loadDeals();
+  }
+
+  function saveDeal() {
+    const brand = document.getElementById("brand").value;
+    const deal = document.getElementById("deal").value;
+    const note = document.getElementById("note").value;
+    const link = document.getElementById("link").value;
+    const validUntil = document.getElementById("validUntil").value;
+
+    if (!brand || !deal || !link || !validUntil) {
+      document.getElementById("saveMsg").innerText = "⚠️ Please fill in all fields.";
+      return;
+    }
+
+    const data = {
+      brand, deal, note, link,
+      validUntil: firebase.firestore.Timestamp.fromDate(new Date(validUntil))
     };
 
-    const ADMIN_PASSWORD = "Yumbless55378@";
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function saveDeal() {
-      const brand = document.getElementById("brand").value;
-      const deal = document.getElementById("deal").value;
-      if (!brand || !deal) {
-        alert("브랜드와 핫딜을 모두 입력해주세요.");
-        return;
-      }
-      await setDoc(doc(db, "hotdeals", brand), { deal });
-      alert("핫딜 저장 완료!");
-      document.getElementById("deal").value = "";
+    db.collection("hotdeals").doc(brand).set(data).then(() => {
+      document.getElementById("saveMsg").innerText = "✅ Saved!";
       loadDeals();
-    }
+    });
+  }
 
-    async function loadDeals() {
-      const list = document.getElementById("dealList");
-      list.innerHTML = "";
-      const snapshot = await getDocs(collection(db, "hotdeals"));
-      snapshot.forEach(docSnap => {
-        const name = docSnap.id;
-        const { deal } = docSnap.data();
-        const item = document.createElement("li");
-        item.textContent = `${name}: ${deal}`;
-        list.appendChild(item);
-      });
-    }
-
-    window.saveDeal = saveDeal;
-
-    window.addEventListener("DOMContentLoaded", () => {
-      const loginBtn = document.getElementById("loginBtn");
-      loginBtn.addEventListener("click", () => {
-        const inputPw = document.getElementById("passwordInput").value;
-        if (inputPw === ADMIN_PASSWORD) {
-          document.getElementById("loginBox").style.display = "none";
-          document.getElementById("adminUI").style.display = "block";
-          loadDeals();
-        } else {
-          document.getElementById("loginError").textContent = "비밀번호가 틀렸습니다.";
-        }
+  function loadDeals() {
+    const container = document.getElementById("dealList");
+    container.innerHTML = "";
+    db.collection("hotdeals").get().then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        const div = document.createElement("div");
+        div.className = "deal-card";
+        div.innerHTML = `
+          <strong>${data.brand}</strong><br>
+          🔥 Deal: ${data.deal}<br>
+          📝 Note: ${data.note || '-'}<br>
+          🔗 <a href="${data.link}" target="_blank">${data.link}</a><br>
+          📅 Valid Until: ${data.validUntil.toDate().toISOString().split('T')[0]}<br>
+          <button onclick="editDeal('${doc.id}')">✏️ Edit</button>
+          <button onclick="deleteDeal('${doc.id}')">❌ Delete</button>
+        `;
+        container.appendChild(div);
       });
     });
-  </script>
+  }
+
+  function editDeal(id) {
+    db.collection("hotdeals").doc(id).get().then((doc) => {
+      const data = doc.data();
+      document.getElementById("brand").value = data.brand;
+      document.getElementById("deal").value = data.deal;
+      document.getElementById("note").value = data.note;
+      document.getElementById("link").value = data.link;
+      const date = data.validUntil.toDate().toISOString().split('T')[0];
+      document.getElementById("validUntil").value = date;
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+
+  function deleteDeal(id) {
+    if (confirm(`Delete deal for ${id}?`)) {
+      db.collection("hotdeals").doc(id).delete().then(loadDeals);
+    }
+  }
+
+  
+  function logout() {
+    localStorage.removeItem("loggedIn");
+    location.reload();
+  }
+
+
+  // Auto-login if previously logged in
+  if (localStorage.getItem("loggedIn") === "true") {
+    showAdmin();
+  }
+</script>
+
 </body>
 </html>
